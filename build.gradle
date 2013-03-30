@@ -1,8 +1,20 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
 
 sourceCompatibility = 1.7
 version = '1.0'
+
+def defaultEncoding = 'UTF-8'
+//[compileJava, compileTestJava].each{ it.options.encoding = defaultEncoding }
+
+[checkstyleMain, checkstyleTest]*.ignoreFailures = true
+[findbugsMain, findbugsTest]*.ignoreFailures = true
+checkstyleTest {
+  excludes = ['**/*']
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'VDMToolsCorbaWrapper',
@@ -15,8 +27,8 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.+'
     compile fileTree(dir: 'lib', include: '*.jar')
+    testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 
 //test {
