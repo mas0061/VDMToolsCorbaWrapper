@@ -42,7 +42,7 @@ public class CorbaClientWrapper {
 		}
 	}
 
-	public void syntaxCheck() {
+	public void syntaxCheck() throws VDMSyntaxException {
 		FileListHolder fileList = new FileListHolder();
 		vdmApr.GetProject().GetFiles(fileList);
 
@@ -56,9 +56,12 @@ public class CorbaClientWrapper {
       showErrors();
 			raiseRuntimeException();
 		} catch (VDMSyntaxException e) {
-      showErrors();
+//      showErrors();
 			System.out.println("Syntax check error!");
-			raiseRuntimeException();
+//			raiseRuntimeException();
+			ErrorListHolder errors = getErrors();
+      destroy();
+      throw new VDMSyntaxException(errors);
 		}
 	}
 
@@ -123,6 +126,12 @@ public class CorbaClientWrapper {
 
 	public void destroy() {
 	  vdmAprCreator.destroy();
+	}
+
+	public ErrorListHolder getErrors() {
+    ErrorListHolder errors = new ErrorListHolder();
+    vdmApr.GetErrorHandler().GetErrors(errors);
+    return errors;
 	}
 
 	private void showErrors() {

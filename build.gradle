@@ -5,9 +5,10 @@ apply plugin: 'findbugs'
 
 sourceCompatibility = 1.7
 version = '1.0'
+outputName = 'VDMToolsCorbaWrapper'
 
 def defaultEncoding = 'UTF-8'
-//[compileJava, compileTestJava].each{ it.options.encoding = defaultEncoding }
+[compileJava, compileTestJava].each{ it.options.encoding = defaultEncoding }
 
 [checkstyleMain, checkstyleTest]*.ignoreFailures = true
 [findbugsMain, findbugsTest]*.ignoreFailures = true
@@ -17,7 +18,7 @@ checkstyleTest {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'VDMToolsCorbaWrapper',
+        attributes 'Implementation-Title': outputName,
                    'Implementation-Version': version
     }
 }
@@ -29,6 +30,13 @@ repositories {
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
     testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+task copyJar << {
+  copy {
+    from 'build/libs/' + outputName + '-' + version + '.jar'
+    into '/Users/mas/Dropbox/repository/masrepo/Ruby/VDMToolsOnWeb'
+  }
 }
 
 //test {

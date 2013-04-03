@@ -10,6 +10,7 @@ import jp.vdmtools.api.corba.VDM.VDMGeneric;
 import jp.vdmtools.api.corba.VDM.VDMSequence;
 import jp.vdmtools.api.corba.VDM.VDMSequenceHelper;
 import junit.framework.Assert;
+import net.mas0061.vdm.corbaWrapper.exception.VDMSyntaxException;
 import net.mas0061.vdm.corbaWrapper.wrapper.CorbaClientWrapper;
 
 import org.junit.After;
@@ -31,7 +32,12 @@ public class CorbaClientTest {
 		client.createProject(fileNameList);
 		client.setEncode("UTF-8");
 
-		client.syntaxCheck();
+		try {
+      client.syntaxCheck();
+    } catch (VDMSyntaxException e) {
+      // TODO 自動生成された catch ブロック
+      e.printStackTrace();
+    }
 		System.out.println("Syntax check is success.");
 
 		client.typeCheck();
